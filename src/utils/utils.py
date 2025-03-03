@@ -150,6 +150,18 @@ def get_llm_model(provider: str, **kwargs):
             base_url=base_url,
             api_key=api_key,
         )
+    elif provider == "tencent":
+        if not kwargs.get("base_url", ""):
+            base_url = os.getenv("TENCNET_ENDPOINT", "https://api.lkeap.cloud.tencent.com/v1")
+        else:
+            base_url = kwargs.get("base_url")
+
+        return ChatOpenAI(
+            model=kwargs.get("model_name", "deepseek-v3"),
+            temperature=kwargs.get("temperature", 0.0),
+            base_url=base_url,
+            api_key=api_key,
+        )
 
     elif provider == "moonshot":
         return ChatOpenAI(
@@ -170,7 +182,8 @@ model_names = {
     "ollama": ["qwen2.5:7b", "qwen2.5:14b", "qwen2.5:32b", "qwen2.5-coder:14b", "qwen2.5-coder:32b", "llama2:7b", "deepseek-r1:14b", "deepseek-r1:32b"],
     "azure_openai": ["gpt-4o", "gpt-4", "gpt-3.5-turbo"],
     "mistral": ["pixtral-large-latest", "mistral-large-latest", "mistral-small-latest", "ministral-8b-latest"],
-    "alibaba": ["qwen-plus", "qwen-max", "qwen-turbo", "qwen-long"],
+    "alibaba": ["qwen-plus", "qwen-max", "qwen-turbo", "qwen-long", "deepseek-v3", "deepseek-r1"],
+    "tencent": ["deepseek-v3", "deepseek-r1"],
     "moonshot": ["moonshot-v1-32k-vision-preview", "moonshot-v1-8k-vision-preview"],
 }
 
